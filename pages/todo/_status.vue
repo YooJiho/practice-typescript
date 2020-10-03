@@ -6,12 +6,13 @@
                 :title="item.title" 
                 :status="item.status" 
                 />
+        <p>{{$route.params.status}}</p>
     </div>
 </template>
 
 <script lang="ts">
-import {Component, Vue, Watch} from 'vue-property-decorator';
-import Item from '@/components/item.vue'
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import Item from '@/components/item.vue';
 
 @Component({
     components: {
@@ -27,9 +28,8 @@ export default class TodoList extends Vue {
 
     renderList: any[] = this.data;
 
-    @Watch('$route.params.status')
+    @Watch('$route.params.status', {immediate: true})
     routeUpdate(newValue: string) {
-        console.log('test'+newValue)
         if (!newValue) {
             this.renderList = this.data;
         } else if (newValue === "active" || newValue === "clear") {
@@ -40,10 +40,3 @@ export default class TodoList extends Vue {
     }
 }
 </script>
-
-<style>
- body {
-     width: 1080px;
-     margin:100px auto;
- }
-</style>

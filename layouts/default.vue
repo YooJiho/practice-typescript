@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue, Watch} from 'vue-property-decorator';
 import ItemInput from '@/components/item-input.vue'
 
 @Component({
@@ -20,7 +20,12 @@ import ItemInput from '@/components/item-input.vue'
         ItemInput
     }
 })
-export default class Header extends Vue {
-    
-}
+export default class TodoApp extends Vue {}
 </script>
+
+<style>
+ body {
+     width: 1080px;
+     margin:100px auto;
+ }
+</style>
