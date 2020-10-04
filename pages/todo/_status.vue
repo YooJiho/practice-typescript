@@ -6,13 +6,14 @@
                 :title="item.title" 
                 :status="item.status" 
                 />
-        <p>{{$route.params.status}}</p>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import Item from '@/components/item.vue';
+import {mapGetters} from 'vuex';
+import {todoStore} from '@/store';
 
 @Component({
     components: {
@@ -20,22 +21,20 @@ import Item from '@/components/item.vue';
     }
 })
 export default class TodoList extends Vue {
-    data: any[] = [
-        { id : 0, title : 'test', status : 'active'},
-        { id : 1, title : 'test1', status : 'active'},
-        { id : 2, title : 'test2', status : 'clear'},
-    ]
+    renderList: any[] = [];
 
-    renderList: any[] = this.data;
+    create() {
+        this.renderList = todoStore.allTodoList;
+    }
 
     @Watch('$route.params.status', {immediate: true})
     routeUpdate(newValue: string) {
         if (!newValue) {
-            this.renderList = this.data;
-        } else if (newValue === "active" || newValue === "clear") {
-            this.renderList = this.data.slice().filter((item: any) => {
-                return item.status === newValue;
-            })
+            this.renderList = todoStore.allTodoList;
+        } else if (newValue === "active") {
+            this.renderList = todoStore.activeTodoList;
+        } else if (newValue === "clear") {
+            this.renderList = todoStore.clearTodoList;
         }
     }
 }
