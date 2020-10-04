@@ -31,7 +31,7 @@ export default class Item extends Vue {
     @Prop() readonly status!: 'active' | 'clear';
 
     changeStatus($event: Event) {
-        const isChecked: boolean = $event.target.checked;
+        const isChecked: boolean = ($event.target as HTMLInputElement).checked;
 
         if (isChecked) {
             todoStore.changeStatus({id: this.id, status: 'clear'});
