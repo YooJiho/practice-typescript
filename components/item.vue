@@ -22,19 +22,26 @@
 
 <script lang="ts">
 import {Component, Vue, Prop} from 'vue-property-decorator'
+import { todoStore } from '@/store';
 
 @Component
 export default class Item extends Vue {
-    @Prop() readonly id!: string;
+    @Prop() readonly id!: number;
     @Prop() readonly title!: string;
     @Prop() readonly status!: 'active' | 'clear';
 
-    changeStatus() {
+    changeStatus($event: Event) {
+        const isChecked: boolean = $event.target.checked;
 
+        if (isChecked) {
+            todoStore.changeStatus({id: this.id, status: 'clear'});
+        } else {
+            todoStore.changeStatus({id: this.id, status: 'active'});
+        }  
     }
 
     removeItem()  {
-
+        todoStore.removeItem(this.id);
     }
 }
 </script>
