@@ -1,13 +1,11 @@
-import { Module, VuexModule, Mutation } from "vuex-module-decorators";
+import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 import { Item } from '@/store/todo.interface';
+import { $axios } from '@/utils/api';
+import { AxiosResponse } from 'axios';
 
 @Module({namespaced: true, name: 'todo', stateFactory: true})
 export default class TodoItem extends VuexModule {
-    todoList: Item[] = [
-        { id : 0, title : 'test', status : 'active'},
-        { id : 1, title : 'test1', status : 'active'},
-        { id : 2, title : 'test2', status : 'clear'},
-    ];
+    todoList: Item[] = [];
 
     // Todo Add
     @Mutation
@@ -25,6 +23,18 @@ export default class TodoItem extends VuexModule {
     @Mutation
     removeItem(id: number) {
         this.todoList.splice(id, 1);
+    }
+
+    @Mutation
+    setTodoList(todoList: Item[]) {
+        this.todoList = todoList;
+    }
+
+    @Action({ rawError: true })
+    async initData() {
+        const response: AxiosResponse<{todoList: Item[]}> = await $axios.get('/data.json');
+        this.setTodoList(response.data.todoList)
+        //this.context.commit('setTodoList', response.data.todoList);
     }
 
     get allTodoList() {

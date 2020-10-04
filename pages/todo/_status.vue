@@ -23,7 +23,7 @@ export default class TodoList extends Vue {
     renderList: any[] = [];
 
     created() {
-        this.initRenderList(this.$route.params.status);
+       todoStore.initData();
     }
 
     initRenderList(status: string) {
@@ -42,7 +42,7 @@ export default class TodoList extends Vue {
     }
     
     @Watch('$store.state.todo.todoList', {immediate: true, deep: true})
-    routeUpdate2() {
+    stateUpdate() {
         this.initRenderList(this.$route.params.status);
     }
 }
